@@ -103,8 +103,7 @@ const progress = document.getElementById("progress");
 function startAuto(){
   progress.style.width = "0%";
   setTimeout(()=>progress.style.width = "100%",50);
-
-  setTimeout(next,3000); // auto after 3 sec
+  setTimeout(next,3000);
 }
 
 function next(){
@@ -122,15 +121,34 @@ function next(){
   }
 }
 
-/* IMAGE SLIDESHOW */
+/* 🔥 SLIDESHOW WITH 2 LOOPS */
 let index = 0;
+let loops = 0;
+
 function startSlideshow(){
   const img = document.getElementById("slideImg");
 
-  setInterval(()=>{
-    index = (index + 1) % images.length;
+  let interval = setInterval(()=>{
+    index++;
+
+    if(index >= images.length){
+      index = 0;
+      loops++;
+    }
+
     img.src = images[index];
-  }, 2000);
+
+    if(loops === 2){
+      clearInterval(interval);
+
+      // optional ending text
+      setTimeout(()=>{
+        document.getElementById("gallery").innerHTML =
+          "<h2>I miss you, Sadaf… 🥺</h2>";
+      },2000);
+    }
+
+  },2000);
 }
 
 /* START */
