@@ -15,6 +15,7 @@ body{
   background: linear-gradient(135deg,#2b5876,#4e4376);
   color:white;
   overflow:hidden;
+  transition: background 0.8s ease;
 }
 
 /* CARD */
@@ -27,7 +28,6 @@ body{
   width:85%;
   max-width:360px;
   box-shadow:0 25px 50px rgba(0,0,0,0.5);
-  transition:0.5s;
 }
 
 /* TEXT */
@@ -39,7 +39,8 @@ h1{
 p{
   font-size:18px;
   min-height:70px;
-  transition:0.4s;
+  opacity:1;
+  transition: opacity 0.5s ease;
 }
 
 /* PROGRESS BAR */
@@ -64,6 +65,8 @@ p{
   width:260px;
   border-radius:15px;
   box-shadow:0 10px 25px rgba(0,0,0,0.5);
+  opacity:1;
+  transition: opacity 0.6s ease-in-out;
 }
 </style>
 </head>
@@ -107,13 +110,28 @@ function startAuto(){
 }
 
 function next(){
+  const textEl = document.getElementById("text");
+
   progress.style.width = "0%";
 
   if(i < pages.length - 1){
-    i++;
-    document.body.style.background = pages[i].bg;
-    document.getElementById("text").innerText = pages[i].text;
-    startAuto();
+
+    // fade out text
+    textEl.style.opacity = 0;
+
+    setTimeout(()=>{
+      i++;
+
+      // change background + text
+      document.body.style.background = pages[i].bg;
+      textEl.innerText = pages[i].text;
+
+      // fade in text
+      textEl.style.opacity = 1;
+
+      startAuto();
+    },300);
+
   } else {
     document.getElementById("card").style.display = "none";
     document.getElementById("gallery").style.display = "flex";
@@ -121,7 +139,7 @@ function next(){
   }
 }
 
-/* 🔥 SLIDESHOW WITH 2 LOOPS */
+/* 🔥 SMOOTH IMAGE SLIDESHOW */
 let index = 0;
 let loops = 0;
 
@@ -129,26 +147,32 @@ function startSlideshow(){
   const img = document.getElementById("slideImg");
 
   let interval = setInterval(()=>{
-    index++;
 
-    if(index >= images.length){
-      index = 0;
-      loops++;
-    }
+    img.style.opacity = 0;
 
-    img.src = images[index];
+    setTimeout(()=>{
+      index++;
 
-    if(loops === 2){
-      clearInterval(interval);
+      if(index >= images.length){
+        index = 0;
+        loops++;
+      }
 
-      // optional ending text
-      setTimeout(()=>{
-        document.getElementById("gallery").innerHTML =
-          "<h2>I miss you, Sadaf… 🥺</h2>";
-      },2000);
-    }
+      img.src = images[index];
+      img.style.opacity = 1;
 
-  },2000);
+      if(loops === 2){
+        clearInterval(interval);
+
+        setTimeout(()=>{
+          document.getElementById("gallery").innerHTML =
+            "<h2>I miss you, Sadaf… 🥺</h2>";
+        },2000);
+      }
+
+    },300);
+
+  },2500);
 }
 
 /* START */
