@@ -13,55 +13,64 @@ body{
   align-items:center;
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg,#2b5876,#4e4376);
+  transition: background 1s;
   color:white;
-  overflow:hidden;
 }
 
 /* CARD */
 .card{
   background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(12px);
   padding:35px;
   border-radius:25px;
   text-align:center;
   width:85%;
   max-width:360px;
   box-shadow:0 25px 50px rgba(0,0,0,0.5);
-  transition:0.5s;
+  animation: fade 0.8s ease;
+  border:1px solid rgba(255,255,255,0.2);
 }
 
 /* TEXT */
 h1{
-  font-size:26px;
   margin-bottom:10px;
+  font-size:28px;
 }
 
 p{
-  font-size:18px;
+  font-size:17px;
   min-height:70px;
-  transition:0.4s;
+  line-height:1.6;
 }
 
-/* PROGRESS BAR */
-.progress{
-  position:fixed;
-  top:0;
-  left:0;
-  height:4px;
-  width:0%;
-  background:white;
-  transition: width linear;
+/* BUTTON */
+button{
+  margin-top:25px;
+  padding:12px 30px;
+  font-size:16px;
+  border:none;
+  border-radius:30px;
+  background: linear-gradient(135deg,#ffffff,#dfe9f3);
+  color:#333;
+  cursor:pointer;
+  transition:0.3s;
+  box-shadow:0 5px 15px rgba(0,0,0,0.3);
 }
 
-/* GALLERY */
+button:hover{
+  transform:scale(1.1);
+}
+
+/* PHOTO GALLERY */
 .gallery{
   display:none;
   flex-direction:column;
   align-items:center;
+  gap:15px;
 }
 
 .gallery img{
-  width:260px;
+  width:250px;
   border-radius:15px;
   box-shadow:0 10px 25px rgba(0,0,0,0.5);
   animation: fade 1s ease;
@@ -75,20 +84,21 @@ p{
 </style>
 </head>
 
-<body onclick="next()">
-
-<div class="progress" id="progress"></div>
+<body id="body">
 
 <!-- TEXT CARD -->
 <div class="card" id="card">
   <h1>Sadaf</h1>
   <p id="text">Oye🥺</p>
+  <button onclick="next()">Next ➡️</button>
 </div>
 
-<!-- SLIDESHOW -->
+<!-- PHOTO SECTION -->
 <div class="gallery" id="gallery">
   <h2>These moments… 💭</h2>
-  <img id="slideImg" src="img1.jpg">
+  <img src="img1.jpg">
+  <img src="img2.jpg">
+  <img src="img3.jpg">
 </div>
 
 <script>
@@ -99,77 +109,24 @@ const pages = [
   {bg:"linear-gradient(135deg,#1e3c72,#2a5298)", text:"Mann nahi lag rha hai🥲"},
   {bg:"linear-gradient(135deg,#0f2027,#203a43,#2c5364)", text:"Kaha chali gayi hai🤧"},
   {bg:"linear-gradient(135deg,#3a1c71,#d76d77,#ffaf7b)", text:"Aise hi apne dost ko besahara chhod diya hai😣"},
-  {bg:"linear-gradient(135deg,#16222a,#3a6073)", text:"Mai ready nahi tha 😵‍💫"},
+  {bg:"linear-gradient(135deg,#16222a,#3a6073)", text:"Ye galat hai, mai ready nahi tha 😵‍💫"},
   {bg:"linear-gradient(135deg,#0f3460,#533483)", text:"Mera paracetamol thoda dur chala gaya🥲"},
   {bg:"linear-gradient(135deg,#1f1c2c,#928dab)", text:"Khair… tum khush raho 😇"},
   {bg:"linear-gradient(135deg,#232526,#414345)", text:"Look what I am missing..."}
 ];
 
-/* 6 IMAGES */
-const images = [
-  "img1.jpg",
-  "img2.jpg",
-  "img3.jpg",
-  "img4.jpg",
-  "img5.jpg",
-  "img6.jpg"
-];
-
-const progress = document.getElementById("progress");
-
-/* AUTO FLOW */
-function startAuto(){
-  progress.style.width = "0%";
-  setTimeout(()=>progress.style.width = "100%",50);
-  setTimeout(next,3000);
-}
-
 function next(){
-  progress.style.width = "0%";
-
   if(i < pages.length - 1){
     i++;
-    document.body.style.background = pages[i].bg;
-    document.getElementById("text").innerText = pages[i].text;
-    startAuto();
+    body.style.background = pages[i].bg;
+    text.innerText = pages[i].text;
   } else {
+    // SHOW PHOTOS
     document.getElementById("card").style.display = "none";
     document.getElementById("gallery").style.display = "flex";
-    startSlideshow();
+    body.style.background = "linear-gradient(135deg,#000000,#434343)";
   }
 }
-
-/* SLIDESHOW WITH 2 LOOPS */
-let index = 0;
-let loops = 0;
-
-function startSlideshow(){
-  const img = document.getElementById("slideImg");
-
-  let interval = setInterval(()=>{
-    index++;
-
-    if(index >= images.length){
-      index = 0;
-      loops++;
-    }
-
-    img.src = images[index];
-
-    if(loops === 2){
-      clearInterval(interval);
-
-      setTimeout(()=>{
-        document.getElementById("gallery").innerHTML =
-          "<h2>I miss you, Sadaf… 🥺</h2>";
-      },2000);
-    }
-
-  },2000);
-}
-
-/* START */
-startAuto();
 </script>
 
 </body>
