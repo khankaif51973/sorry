@@ -64,13 +64,6 @@ p{
   width:260px;
   border-radius:15px;
   box-shadow:0 10px 25px rgba(0,0,0,0.5);
-  animation: fade 1s ease;
-}
-
-/* ANIMATION */
-@keyframes fade{
-  from{opacity:0; transform:translateY(25px);}
-  to{opacity:1; transform:translateY(0);}
 }
 </style>
 </head>
@@ -79,24 +72,18 @@ p{
 
 <div class="progress" id="progress"></div>
 
-<!-- TEXT CARD -->
 <div class="card" id="card">
   <h1>Sadaf</h1>
   <p id="text">Oye🥺</p>
 </div>
 
-<!-- SLIDESHOW -->
 <div class="gallery" id="gallery">
   <h2>These moments… 💭</h2>
   <img id="slideImg" src="img1.jpg">
 </div>
 
-<!-- 🎵 MUSIC -->
-<audio id="music" src="song.mp3" loop></audio>
-
 <script>
 let i = 0;
-let musicStarted = false;
 
 const pages = [
   {bg:"linear-gradient(135deg,#2b5876,#4e4376)", text:"Oye🥺"},
@@ -113,21 +100,14 @@ const images = ["img1.jpg","img2.jpg","img3.jpg"];
 
 const progress = document.getElementById("progress");
 
-/* AUTO FLOW */
 function startAuto(){
   progress.style.width = "0%";
   setTimeout(()=>progress.style.width = "100%",50);
-  setTimeout(next,3000);
+
+  setTimeout(next,3000); // auto after 3 sec
 }
 
 function next(){
-
-  // 🎵 start music on first tap
-  if(!musicStarted){
-    document.getElementById("music").play();
-    musicStarted = true;
-  }
-
   progress.style.width = "0%";
 
   if(i < pages.length - 1){
@@ -142,37 +122,15 @@ function next(){
   }
 }
 
-/* SLIDESHOW (2 loops + pause music) */
+/* IMAGE SLIDESHOW */
 let index = 0;
-let loops = 0;
-
 function startSlideshow(){
   const img = document.getElementById("slideImg");
-  const music = document.getElementById("music");
 
-  let interval = setInterval(()=>{
-    index++;
-
-    if(index >= images.length){
-      index = 0;
-      loops++;
-    }
-
+  setInterval(()=>{
+    index = (index + 1) % images.length;
     img.src = images[index];
-
-    if(loops === 2){
-      clearInterval(interval);
-
-      // ⏸️ pause music at end
-      music.pause();
-
-      setTimeout(()=>{
-        document.getElementById("gallery").innerHTML =
-          "<h2>I miss you, Sadaf… 🥺</h2>";
-      },2000);
-    }
-
-  },2000);
+  }, 2000);
 }
 
 /* START */
